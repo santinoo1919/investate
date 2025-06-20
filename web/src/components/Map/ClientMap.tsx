@@ -1,6 +1,5 @@
 "use client";
 
-import dynamic from "next/dynamic";
 import { useEffect, useState, useCallback } from "react";
 import { LatLngTuple } from "leaflet";
 import FiltersPanel from "../Filters/FiltersPanel";
