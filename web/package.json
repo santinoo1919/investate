@@ -15,12 +15,14 @@
     "@react-leaflet/core": "^3.0.0",
     "@supabase/auth-helpers-nextjs": "^0.10.0",
     "@supabase/supabase-js": "^2.50.0",
+    "css-loader": "^7.1.2",
     "leaflet": "^1.9.4",
     "leaflet-defaulticon-compatibility": "^0.1.2",
     "next": "15.3.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-leaflet": "^5.0.0"
+    "react-leaflet": "^5.0.0",
+    "style-loader": "^4.0.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
