@@ -132,7 +132,8 @@ const PriceHistoryChart: React.FC<PriceHistoryChartProps> = ({
 };
 
 export default function ClientMap({ center, zoom }: ClientMapProps) {
-  const [properties, setProperties] = useState<Property[]>([]);
+  const [allProperties, setAllProperties] = useState<Property[]>([]);
+  const [filteredProperties, setFilteredProperties] = useState<Property[]>([]);
   const [loading, setLoading] = useState(true);
   const [filters, setFilters] = useState<Filters>({});
   const [propertyTypes, setPropertyTypes] = useState<string[]>([]);
@@ -147,18 +148,24 @@ export default function ClientMap({ center, zoom }: ClientMapProps) {
     end: new Date().toISOString().split("T")[0],
   });
 
-  const fetchProperties = useCallback(async () => {
-    try {
-      setLoading(true);
-      const data = await propertyRepository.findAll(filters);
-      setProperties(data);
-      console.log(`Loaded ${data.length} properties`);
-    } catch (error) {
-      console.error("Error:", error);
-    } finally {
-      setLoading(false);
-    }
-  }, [filters]);
+  // Load all properties once on initial render
+  useEffect(() => {
+    const fetchProperties = async () => {
+      try {
+        setLoading(true);
+        const data = await propertyRepository.findAll();
+        setAllProperties(data);
+        setFilteredProperties(data);
+        console.log(`Loaded ${data.length} properties`);
+      } catch (error) {
+        console.error("Error:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProperties();
+  }, []);
 
   // Load metadata (property types, price range, date range)
   useEffect(() => {
@@ -181,10 +188,67 @@ export default function ClientMap({ center, zoom }: ClientMapProps) {
     loadMetadata();
   }, []);
 
-  // Load properties when filters change
+  // Apply filters on the client side
   useEffect(() => {
-    fetchProperties();
-  }, [fetchProperties]);
+    let result = allProperties;
+
+    // Property Type
+    if (filters.propertyTypes && filters.propertyTypes.length > 0) {
+      result = result.filter((p) =>
+        filters.propertyTypes?.includes(p.property_type)
+      );
+    }
+
+    // Price
+    if (filters.minPrice) {
+      result = result.filter(
+        (p) => p.price_history[0]?.price >= filters.minPrice!
+      );
+    }
+    if (filters.maxPrice) {
+      result = result.filter(
+        (p) => p.price_history[0]?.price <= filters.maxPrice!
+      );
+    }
+
+    // Area
+    if (filters.minArea) {
+      result = result.filter((p) => p.area >= filters.minArea!);
+    }
+    if (filters.maxArea) {
+      result = result.filter((p) => p.area <= filters.maxArea!);
+    }
+
+    // Rooms
+    if (filters.minRooms) {
+      result = result.filter(
+        (p) => p.rooms !== null && p.rooms >= filters.minRooms!
+      );
+    }
+    if (filters.maxRooms) {
+      result = result.filter(
+        (p) => p.rooms !== null && p.rooms <= filters.maxRooms!
+      );
+    }
+
+    // Date
+    if (filters.startDate) {
+      result = result.filter(
+        (p) =>
+          new Date(p.price_history[0]?.transaction_date) >=
+          new Date(filters.startDate!)
+      );
+    }
+    if (filters.endDate) {
+      result = result.filter(
+        (p) =>
+          new Date(p.price_history[0]?.transaction_date) <=
+          new Date(filters.endDate!)
+      );
+    }
+
+    setFilteredProperties(result);
+  }, [filters, allProperties]);
 
   const handleFilterChange = (newFilters: Filters) => {
     setFilters(newFilters);
@@ -217,7 +281,7 @@ export default function ClientMap({ center, zoom }: ClientMapProps) {
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           />
-          {properties.map((property) => {
+          {filteredProperties.map((property) => {
             if (!property.latitude || !property.longitude) return null;
 
             const latestPrice = property.price_history?.[0]?.price;
