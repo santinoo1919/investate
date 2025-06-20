@@ -5,7 +5,6 @@ import { useEffect, useState, useCallback } from "react";
 import { LatLngTuple } from "leaflet";
 import FiltersPanel from "../Filters/FiltersPanel";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
-import "leaflet/dist/leaflet.css";
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css";
 import "leaflet-defaulticon-compatibility";
 import { Property } from "@/types/property";
