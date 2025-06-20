@@ -8,8 +8,32 @@ import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility
 import "leaflet-defaulticon-compatibility";
 import { Property } from "@/types/property";
 import { PropertyRepository } from "@/repositories/PropertyRepository";
+import L from "leaflet";
 
 const propertyRepository = new PropertyRepository();
+
+// --- Custom Marker Icons ---
+const greenIcon = new L.Icon({
+  iconUrl:
+    "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png",
+  shadowUrl:
+    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowSize: [41, 41],
+});
+
+const blueIcon = new L.Icon({
+  iconUrl:
+    "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png",
+  shadowUrl:
+    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowSize: [41, 41],
+});
 
 interface Filters {
   propertyTypes?: string[];
@@ -193,11 +217,25 @@ export default function ClientMap({ center, zoom }: ClientMapProps) {
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           />
-          {properties.map((property) =>
-            property.latitude && property.longitude ? (
+          {properties.map((property) => {
+            if (!property.latitude || !property.longitude) return null;
+
+            const latestPrice = property.price_history?.[0]?.price;
+            const area = property.area;
+            let icon = blueIcon;
+
+            if (latestPrice && area && area > 0) {
+              const pricePerSqm = latestPrice / area;
+              if (pricePerSqm < 3500) {
+                icon = greenIcon;
+              }
+            }
+
+            return (
               <Marker
                 key={property.id}
                 position={[property.latitude, property.longitude]}
+                icon={icon}
               >
                 <Popup>
                   <div className="max-w-xs">
@@ -213,8 +251,8 @@ export default function ClientMap({ center, zoom }: ClientMapProps) {
                   </div>
                 </Popup>
               </Marker>
-            ) : null
-          )}
+            );
+          })}
         </MapContainer>
       </div>
     </div>
