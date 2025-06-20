@@ -197,9 +197,7 @@ export default function ClientMap({ center, zoom }: ClientMapProps) {
                     <h3 className="font-semibold mb-1">{property.address}</h3>
                     <div className="text-sm text-gray-600 mb-2">
                       <div>{property.property_type}</div>
-                      <div>
-                        {property.area}m² • {property.rooms || "?"} pièces
-                      </div>
+                      <div>{property.area}m²</div>
                     </div>
                     <PriceHistoryChart priceHistory={property.price_history} />
                   </div>
