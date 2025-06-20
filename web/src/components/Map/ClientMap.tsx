@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import { LatLngTuple } from "leaflet";
 import FiltersPanel from "../Filters/FiltersPanel";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
