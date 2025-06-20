@@ -30,10 +30,12 @@ interface ClientMapProps {
 
 interface PriceHistoryChartProps {
   priceHistory: Property["price_history"];
+  area: Property["area"];
 }
 
 const PriceHistoryChart: React.FC<PriceHistoryChartProps> = ({
   priceHistory,
+  area,
 }) => {
   if (!priceHistory || priceHistory.length === 0) return null;
 
@@ -92,6 +94,11 @@ const PriceHistoryChart: React.FC<PriceHistoryChartProps> = ({
             </div>
             <div className="text-sm font-medium">
               {formatPrice(record.price)}
+              {area && area > 0 && (
+                <div className="text-xs text-gray-500">
+                  {formatPrice(record.price / area)}/m²
+                </div>
+              )}
             </div>
           </div>
         ))}
@@ -199,7 +206,10 @@ export default function ClientMap({ center, zoom }: ClientMapProps) {
                       <div>{property.property_type}</div>
                       <div>{property.area}m²</div>
                     </div>
-                    <PriceHistoryChart priceHistory={property.price_history} />
+                    <PriceHistoryChart
+                      priceHistory={property.price_history}
+                      area={property.area}
+                    />
                   </div>
                 </Popup>
               </Marker>
