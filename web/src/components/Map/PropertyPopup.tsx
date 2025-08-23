@@ -102,7 +102,7 @@ export default function PropertyPopup({ property }: PropertyPopupProps) {
   };
 
   return (
-    <div className="w-80 bg-white rounded-lg shadow-lg border border-gray-200 overflow-hidden">
+    <div className="w-80 bg-white rounded-lg shadow-lg overflow-hidden">
       <div className="px-4 py-3 border-b border-gray-100">
         <div className="flex items-start gap-2">
           <MapPin className="h-4 w-4 text-gray-500 mt-0.5 flex-shrink-0" />
@@ -139,16 +139,18 @@ export default function PropertyPopup({ property }: PropertyPopupProps) {
               </span>
             </div>
           )}
-          {property.price_history?.[0]?.transaction_date && (
-            <div className="flex items-center gap-2">
-              <Calendar className="h-4 w-4 text-gray-500" />
-              <span className="text-gray-600">Dernière vente:</span>
-              <span className="font-medium text-gray-800 text-xs">
-                {formatDate(property.price_history[0].transaction_date)}
-              </span>
-            </div>
-          )}
         </div>
+
+        {/* Dernière vente - Full width */}
+        {property.price_history?.[0]?.transaction_date && (
+          <div className="flex items-center gap-2 text-sm">
+            <Calendar className="h-4 w-4 text-gray-500" />
+            <span className="text-gray-600">Dernière vente:</span>
+            <span className="font-medium text-gray-800">
+              {formatDate(property.price_history[0].transaction_date)}
+            </span>
+          </div>
+        )}
 
         {/* Price History Chart */}
         <div className="border-t border-gray-100 pt-3">

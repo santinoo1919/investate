@@ -199,7 +199,7 @@ export default function FiltersPanelNew({
                 <PopoverTrigger asChild>
                   <Button
                     variant="outline"
-                    className="w-full justify-start text-left font-normal focus:ring-1 focus:ring-blue-400 focus:outline-none transition-all duration-200"
+                    className="w-full justify-center text-center font-normal focus:ring-1 focus:ring-blue-400 focus:outline-none transition-all duration-200"
                   >
                     <CalendarIcon className="mr-2 h-4 w-4" />
                     {localFilters.startDate ? (
@@ -239,9 +239,9 @@ export default function FiltersPanelNew({
                 <PopoverTrigger asChild>
                   <Button
                     variant="outline"
-                    className="w-full justify-start text-left font-normal focus:ring-1 focus:ring-blue-400 focus:outline-none transition-all duration-200"
+                    className="w-full justify-center text-center font-normal focus:ring-1 focus:ring-blue-400 focus:outline-none transition-all duration-200"
                   >
-                    <CalendarIcon className="mr-2 h-4 w-4" />
+                    <CalendarIcon className="mr-4 w-4" />
                     {localFilters.endDate ? (
                       format(new Date(localFilters.endDate), "dd/MM/yy")
                     ) : (
