@@ -267,6 +267,20 @@ export default function ClientMap({ center, zoom }: ClientMapProps) {
     }
 
     setFilteredProperties(result);
+
+    // Show toast for 0 results
+    if (
+      result.length === 0 &&
+      Object.keys(filters).some(
+        (key) => filters[key as keyof Filters] !== undefined
+      )
+    ) {
+      toast.warning("🔍 Aucun résultat", {
+        description:
+          "Aucun bien ne correspond à vos critères. Essayez de relâcher certains filtres.",
+        duration: 5000,
+      });
+    }
   }, [filters, allProperties]);
 
   const handleFilterChange = (newFilters: Filters) => {
@@ -288,7 +302,6 @@ export default function ClientMap({ center, zoom }: ClientMapProps) {
         onFilterChange={handleFilterChange}
         propertyTypes={propertyTypes}
         priceRange={priceRange}
-        dateRange={dateRange}
       />
       <div className="flex-1 relative">
         {/* Legend - Top Right (left of zoom controls) */}

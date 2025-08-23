@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Input } from "@/components/ui/input";
@@ -18,9 +18,8 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Menu, X, CalendarIcon } from "lucide-react";
+import { Menu, CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
-import { fr } from "date-fns/locale";
 
 interface Filters {
   propertyTypes?: string[];
@@ -39,7 +38,6 @@ interface FiltersPanelNewProps {
   onFilterChange: (filters: Filters) => void;
   propertyTypes: string[];
   priceRange: { min: number; max: number };
-  dateRange: { start: string; end: string };
 }
 
 export default function FiltersPanelNew({
@@ -47,7 +45,6 @@ export default function FiltersPanelNew({
   onFilterChange,
   propertyTypes,
   priceRange,
-  dateRange,
 }: FiltersPanelNewProps) {
   const [localFilters, setLocalFilters] = useState<Filters>(initialFilters);
   const [isDirty, setIsDirty] = useState(false);
@@ -56,16 +53,17 @@ export default function FiltersPanelNew({
     key: keyof Filters,
     value: string | number | string[] | undefined
   ) => {
-    setLocalFilters((prev) => {
-      const newValue = value === "" ? undefined : value;
-      if (prev[key] === newValue) return prev; // Prevent unnecessary re-renders
-      return {
-        ...prev,
-        [key]: newValue,
-      };
-    });
+    setLocalFilters((prev) => ({
+      ...prev,
+      [key]: value === "" ? undefined : value,
+    }));
     setIsDirty(true);
   };
+
+  const handleNumberChange =
+    (key: keyof Filters) => (e: React.ChangeEvent<HTMLInputElement>) => {
+      handleChange(key, e.target.value ? Number(e.target.value) : undefined);
+    };
 
   const handleApply = () => {
     onFilterChange(localFilters);
@@ -79,14 +77,13 @@ export default function FiltersPanelNew({
     setIsDirty(false);
   };
 
-  const FilterContent = () => (
+  const renderFilterContent = () => (
     <div className="w-full h-full flex flex-col">
       <div className="px-6 py-4 border-b border-gray-200">
         <h2 className="text-xl font-semibold text-gray-800">Filtres</h2>
       </div>
 
       <div className="flex-grow p-6 space-y-6 overflow-y-auto">
-        {/* Filter sections */}
         <div className="space-y-2">
           <Label htmlFor="propertyType">Type de bien</Label>
           <Select
@@ -122,12 +119,7 @@ export default function FiltersPanelNew({
                 min={priceRange.min}
                 max={priceRange.max}
                 value={localFilters.minPrice || ""}
-                onChange={(e) =>
-                  handleChange(
-                    "minPrice",
-                    e.target.value ? Number(e.target.value) : undefined
-                  )
-                }
+                onChange={handleNumberChange("minPrice")}
               />
             </div>
             <div>
@@ -137,12 +129,7 @@ export default function FiltersPanelNew({
                 min={priceRange.min}
                 max={priceRange.max}
                 value={localFilters.maxPrice || ""}
-                onChange={(e) =>
-                  handleChange(
-                    "maxPrice",
-                    e.target.value ? Number(e.target.value) : undefined
-                  )
-                }
+                onChange={handleNumberChange("maxPrice")}
               />
             </div>
           </div>
@@ -157,12 +144,7 @@ export default function FiltersPanelNew({
                 placeholder="Min"
                 min={1}
                 value={localFilters.minRooms || ""}
-                onChange={(e) =>
-                  handleChange(
-                    "minRooms",
-                    e.target.value ? Number(e.target.value) : undefined
-                  )
-                }
+                onChange={handleNumberChange("minRooms")}
               />
             </div>
             <div>
@@ -171,12 +153,7 @@ export default function FiltersPanelNew({
                 placeholder="Max"
                 min={1}
                 value={localFilters.maxRooms || ""}
-                onChange={(e) =>
-                  handleChange(
-                    "maxRooms",
-                    e.target.value ? Number(e.target.value) : undefined
-                  )
-                }
+                onChange={handleNumberChange("maxRooms")}
               />
             </div>
           </div>
@@ -191,12 +168,7 @@ export default function FiltersPanelNew({
                 placeholder="Min"
                 min={0}
                 value={localFilters.minArea || ""}
-                onChange={(e) =>
-                  handleChange(
-                    "minArea",
-                    e.target.value ? Number(e.target.value) : undefined
-                  )
-                }
+                onChange={handleNumberChange("minArea")}
               />
             </div>
             <div>
@@ -205,12 +177,7 @@ export default function FiltersPanelNew({
                 placeholder="Max"
                 min={0}
                 value={localFilters.maxArea || ""}
-                onChange={(e) =>
-                  handleChange(
-                    "maxArea",
-                    e.target.value ? Number(e.target.value) : undefined
-                  )
-                }
+                onChange={handleNumberChange("maxArea")}
               />
             </div>
           </div>
@@ -247,15 +214,13 @@ export default function FiltersPanelNew({
                         ? new Date(localFilters.startDate)
                         : undefined
                     }
-                    onSelect={(date) => {
-                      console.log("Start date selected:", date);
+                    onSelect={(date) =>
                       handleChange(
                         "startDate",
                         date ? date.toISOString().split("T")[0] : undefined
-                      );
-                    }}
+                      )
+                    }
                     disabled={(date) => date.getFullYear() !== 2024}
-                    initialFocus
                   />
                 </PopoverContent>
               </Popover>
@@ -288,15 +253,13 @@ export default function FiltersPanelNew({
                         ? new Date(localFilters.endDate)
                         : undefined
                     }
-                    onSelect={(date) => {
-                      console.log("End date selected:", date);
+                    onSelect={(date) =>
                       handleChange(
                         "endDate",
                         date ? date.toISOString().split("T")[0] : undefined
-                      );
-                    }}
+                      )
+                    }
                     disabled={(date) => date.getFullYear() !== 2024}
-                    initialFocus
                   />
                 </PopoverContent>
               </Popover>
@@ -320,12 +283,10 @@ export default function FiltersPanelNew({
 
   return (
     <>
-      {/* Desktop Sidebar - Always visible */}
       <div className="hidden lg:block w-80 bg-white border-r border-gray-200 h-full">
-        <FilterContent />
+        {renderFilterContent()}
       </div>
 
-      {/* Mobile Sheet - Triggered by button */}
       <div className="lg:hidden">
         <Sheet>
           <SheetTrigger asChild>
@@ -339,7 +300,7 @@ export default function FiltersPanelNew({
             </Button>
           </SheetTrigger>
           <SheetContent side="left" className="w-80 p-0">
-            <FilterContent />
+            {renderFilterContent()}
           </SheetContent>
         </Sheet>
       </div>
