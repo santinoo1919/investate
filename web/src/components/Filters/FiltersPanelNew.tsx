@@ -47,6 +47,8 @@ export default function FiltersPanelNew({
   priceRange,
 }: FiltersPanelNewProps) {
   const [localFilters, setLocalFilters] = useState<Filters>(initialFilters);
+  const [startDateOpen, setStartDateOpen] = useState(false);
+  const [endDateOpen, setEndDateOpen] = useState(false);
   const [isDirty, setIsDirty] = useState(false);
 
   const handleChange = (
@@ -120,6 +122,7 @@ export default function FiltersPanelNew({
                 max={priceRange.max}
                 value={localFilters.minPrice || ""}
                 onChange={handleNumberChange("minPrice")}
+                className="focus:ring-1 focus:ring-blue-400 focus:outline-none transition-all duration-200"
               />
             </div>
             <div>
@@ -130,6 +133,7 @@ export default function FiltersPanelNew({
                 max={priceRange.max}
                 value={localFilters.maxPrice || ""}
                 onChange={handleNumberChange("maxPrice")}
+                className="focus:ring-1 focus:ring-blue-400 focus:outline-none transition-all duration-200"
               />
             </div>
           </div>
@@ -145,6 +149,7 @@ export default function FiltersPanelNew({
                 min={1}
                 value={localFilters.minRooms || ""}
                 onChange={handleNumberChange("minRooms")}
+                className="focus:ring-1 focus:ring-blue-400 focus:outline-none transition-all duration-200"
               />
             </div>
             <div>
@@ -154,6 +159,7 @@ export default function FiltersPanelNew({
                 min={1}
                 value={localFilters.maxRooms || ""}
                 onChange={handleNumberChange("maxRooms")}
+                className="focus:ring-1 focus:ring-blue-400 focus:outline-none transition-all duration-200"
               />
             </div>
           </div>
@@ -169,6 +175,7 @@ export default function FiltersPanelNew({
                 min={0}
                 value={localFilters.minArea || ""}
                 onChange={handleNumberChange("minArea")}
+                className="focus:ring-1 focus:ring-blue-400 focus:outline-none transition-all duration-200"
               />
             </div>
             <div>
@@ -178,6 +185,7 @@ export default function FiltersPanelNew({
                 min={0}
                 value={localFilters.maxArea || ""}
                 onChange={handleNumberChange("maxArea")}
+                className="focus:ring-1 focus:ring-blue-400 focus:outline-none transition-all duration-200"
               />
             </div>
           </div>
@@ -187,11 +195,11 @@ export default function FiltersPanelNew({
           <Label>Date de transaction</Label>
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <Popover>
+              <Popover open={startDateOpen} onOpenChange={setStartDateOpen}>
                 <PopoverTrigger asChild>
                   <Button
                     variant="outline"
-                    className="w-full justify-start text-left font-normal"
+                    className="w-full justify-start text-left font-normal focus:ring-1 focus:ring-blue-400 focus:outline-none transition-all duration-200"
                   >
                     <CalendarIcon className="mr-2 h-4 w-4" />
                     {localFilters.startDate ? (
@@ -214,23 +222,24 @@ export default function FiltersPanelNew({
                         ? new Date(localFilters.startDate)
                         : undefined
                     }
-                    onSelect={(date) =>
+                    onSelect={(date) => {
                       handleChange(
                         "startDate",
-                        date ? date.toISOString().split("T")[0] : undefined
-                      )
-                    }
+                        date ? date.toLocaleDateString("en-CA") : undefined
+                      );
+                      setStartDateOpen(false); // Close calendar after selection
+                    }}
                     disabled={(date) => date.getFullYear() !== 2024}
                   />
                 </PopoverContent>
               </Popover>
             </div>
             <div>
-              <Popover>
+              <Popover open={endDateOpen} onOpenChange={setEndDateOpen}>
                 <PopoverTrigger asChild>
                   <Button
                     variant="outline"
-                    className="w-full justify-start text-left font-normal"
+                    className="w-full justify-start text-left font-normal focus:ring-1 focus:ring-blue-400 focus:outline-none transition-all duration-200"
                   >
                     <CalendarIcon className="mr-2 h-4 w-4" />
                     {localFilters.endDate ? (
@@ -253,12 +262,13 @@ export default function FiltersPanelNew({
                         ? new Date(localFilters.endDate)
                         : undefined
                     }
-                    onSelect={(date) =>
+                    onSelect={(date) => {
                       handleChange(
                         "endDate",
-                        date ? date.toISOString().split("T")[0] : undefined
-                      )
-                    }
+                        date ? date.toLocaleDateString("en-CA") : undefined
+                      );
+                      setEndDateOpen(false); // Close calendar after selection
+                    }}
                     disabled={(date) => date.getFullYear() !== 2024}
                   />
                 </PopoverContent>
@@ -273,7 +283,11 @@ export default function FiltersPanelNew({
           <Button variant="outline" onClick={handleReset} className="text-sm">
             Réinitialiser
           </Button>
-          <Button onClick={handleApply} disabled={!isDirty} className="text-sm">
+          <Button
+            onClick={handleApply}
+            disabled={!isDirty}
+            className="text-sm bg-gradient-to-b from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white shadow-md"
+          >
             Appliquer
           </Button>
         </div>

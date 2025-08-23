@@ -143,7 +143,6 @@ export default function ClientMap({ center, zoom }: ClientMapProps) {
     max: 1000000,
   });
 
-
   // Load all properties once on initial render
   useEffect(() => {
     const fetchProperties = async () => {

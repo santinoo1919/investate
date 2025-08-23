@@ -90,6 +90,28 @@ body {
   margin: 0;
 }
 
+/* Fix black color in calendar - make it blue to match other fields */
+.rdp-day_selected {
+  background-color: #3b82f6 !important;
+  color: white !important;
+}
+
+.rdp-day_selected:hover {
+  background-color: #2563eb !important;
+}
+
+/* Consistent focus styling for all form elements */
+.focus-ring {
+  @apply focus:ring-1 focus:ring-blue-400 focus:outline-none transition-all duration-200;
+}
+
+/* Override any default focus borders that might conflict */
+input:focus,
+select:focus,
+button:focus {
+  outline: none !important;
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;
