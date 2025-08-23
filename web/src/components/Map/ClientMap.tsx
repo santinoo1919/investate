@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { LatLngTuple } from "leaflet";
-import FiltersPanel from "../Filters/FiltersPanel";
+import FiltersPanelNew from "../Filters/FiltersPanelNew";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css";
 import "leaflet-defaulticon-compatibility";
@@ -283,7 +283,7 @@ export default function ClientMap({ center, zoom }: ClientMapProps) {
 
   return (
     <div className="flex h-screen">
-      <FiltersPanel
+      <FiltersPanelNew
         filters={filters}
         onFilterChange={handleFilterChange}
         propertyTypes={propertyTypes}
