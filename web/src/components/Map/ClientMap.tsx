@@ -142,12 +142,7 @@ export default function ClientMap({ center, zoom }: ClientMapProps) {
     min: 0,
     max: 1000000,
   });
-  const [dateRange, setDateRange] = useState<{ start: string; end: string }>({
-    start: new Date(new Date().getFullYear() - 1, 0, 1)
-      .toISOString()
-      .split("T")[0],
-    end: new Date().toISOString().split("T")[0],
-  });
+
 
   // Load all properties once on initial render
   useEffect(() => {
@@ -190,15 +185,13 @@ export default function ClientMap({ center, zoom }: ClientMapProps) {
   useEffect(() => {
     const loadMetadata = async () => {
       try {
-        const [types, prices, dates] = await Promise.all([
+        const [types, prices] = await Promise.all([
           propertyRepository.getPropertyTypes(),
           propertyRepository.getPriceRange(),
-          propertyRepository.getDateRange(),
         ]);
 
         setPropertyTypes(types);
         setPriceRange(prices);
-        setDateRange(dates);
       } catch (error) {
         console.error("Error loading metadata:", error);
       }
