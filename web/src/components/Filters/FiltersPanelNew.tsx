@@ -82,7 +82,7 @@ export default function FiltersPanelNew({
   const renderFilterContent = () => (
     <div className="w-full h-full flex flex-col">
       <div className="px-6 py-4 border-b border-gray-200">
-        <h2 className="text-xl font-semibold text-gray-800">Filtres</h2>
+        <h2 className="text-xl font-medium text-gray-800">Filtres</h2>
       </div>
 
       <div className="flex-grow p-6 space-y-6 overflow-y-auto">
@@ -280,7 +280,11 @@ export default function FiltersPanelNew({
 
       <div className="px-6 py-4 border-t border-gray-200">
         <div className="flex justify-end space-x-3">
-          <Button variant="outline" onClick={handleReset} className="text-sm">
+          <Button
+            variant="outline"
+            onClick={handleReset}
+            className="text-sm font-normal"
+          >
             Réinitialiser
           </Button>
           <Button
@@ -307,7 +311,7 @@ export default function FiltersPanelNew({
             <Button
               variant="outline"
               size="sm"
-              className="fixed top-4 left-4 z-[9999] bg-white shadow-lg"
+              className="fixed top-4 left-4 z-[9999] bg-white shadow-lg font-normal"
             >
               <Menu className="h-4 w-4 mr-2" />
               Filtres

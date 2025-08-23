@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -22,6 +23,10 @@ body {
   margin: 0;
   padding: 0;
   overflow: hidden;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Helvetica Neue", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 #map {
@@ -31,12 +36,59 @@ body {
 }
 
 .leaflet-popup-content {
-  margin: 0;
-  min-width: 200px;
+  margin: 0 !important;
+  padding: 0 !important;
+  min-width: 320px;
+  border-radius: 8px;
+  overflow: hidden;
 }
 
 .leaflet-popup-content p {
   margin: 0;
+}
+
+.leaflet-popup-content-wrapper {
+  border-radius: 8px !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04) !important;
+  border: 1px solid #e5e7eb !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  animation: popupEntrance 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards !important;
+}
+
+@keyframes popupEntrance {
+  from {
+    transform: scale(0.8) translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+}
+
+.leaflet-popup-tip {
+  background: white !important;
+  border: 1px solid #e5e7eb !important;
+  box-shadow: none !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* Delay close button appearance for better UX */
+.leaflet-popup-close-button {
+  animation: closeButtonEntrance 0.2s ease-out 0.4s both !important;
+  opacity: 0;
+}
+
+@keyframes closeButtonEntrance {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 /* Custom marker colors */
@@ -103,6 +155,32 @@ body {
 /* Consistent focus styling for all form elements */
 .focus-ring {
   @apply focus:ring-1 focus:ring-blue-400 focus:outline-none transition-all duration-200;
+}
+
+/* Typography utilities */
+.font-sans {
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Helvetica Neue", Arial, sans-serif;
+}
+
+.font-light {
+  font-weight: 300;
+}
+
+.font-normal {
+  font-weight: 400;
+}
+
+.font-medium {
+  font-weight: 500;
+}
+
+.font-semibold {
+  font-weight: 600;
+}
+
+.font-bold {
+  font-weight: 700;
 }
 
 /* Override any default focus borders that might conflict */

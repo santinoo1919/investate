@@ -10,6 +10,7 @@ import { Property } from "@/types/property";
 import { PropertyRepository } from "@/repositories/PropertyRepository";
 import L from "leaflet";
 import { toast } from "sonner";
+import PropertyPopup from "./PropertyPopup";
 
 const propertyRepository = new PropertyRepository();
 
@@ -52,85 +53,6 @@ interface ClientMapProps {
   center?: LatLngTuple;
   zoom?: number;
 }
-
-interface PriceHistoryChartProps {
-  priceHistory: Property["price_history"];
-  area: Property["area"];
-}
-
-const PriceHistoryChart: React.FC<PriceHistoryChartProps> = ({
-  priceHistory,
-  area,
-}) => {
-  if (!priceHistory || priceHistory.length === 0) return null;
-
-  const sortedHistory = [...priceHistory].sort(
-    (a, b) =>
-      new Date(a.transaction_date).getTime() -
-      new Date(b.transaction_date).getTime()
-  );
-
-  const formatPrice = (price: number) => {
-    return new Intl.NumberFormat("fr-FR", {
-      style: "currency",
-      currency: "EUR",
-      maximumFractionDigits: 0,
-    }).format(price);
-  };
-
-  const formatDate = (dateStr: string) => {
-    return new Date(dateStr).toLocaleDateString("fr-FR", {
-      year: "numeric",
-      month: "short",
-    });
-  };
-
-  return (
-    <div className="mt-2">
-      <h4 className="text-sm font-semibold mb-2">Historique des prix</h4>
-      <div className="space-y-2">
-        {sortedHistory.map((record, index) => (
-          <div
-            key={record.transaction_date}
-            className="flex items-center space-x-2"
-          >
-            <div className="text-xs text-gray-600">
-              {formatDate(record.transaction_date)}
-            </div>
-            <div className="flex-grow h-0.5 bg-gray-200 relative">
-              {index > 0 && (
-                <div
-                  className={`absolute right-0 text-xs ${
-                    record.price > sortedHistory[index - 1].price
-                      ? "text-green-600"
-                      : record.price < sortedHistory[index - 1].price
-                      ? "text-red-600"
-                      : "text-gray-600"
-                  }`}
-                >
-                  {(
-                    ((record.price - sortedHistory[index - 1].price) /
-                      sortedHistory[index - 1].price) *
-                    100
-                  ).toFixed(1)}
-                  %
-                </div>
-              )}
-            </div>
-            <div className="text-sm font-medium">
-              {formatPrice(record.price)}
-              {area && area > 0 && (
-                <div className="text-xs text-gray-500">
-                  {formatPrice(record.price / area)}/m²
-                </div>
-              )}
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-};
 
 export default function ClientMap({ center, zoom }: ClientMapProps) {
   const [allProperties, setAllProperties] = useState<Property[]>([]);
@@ -349,17 +271,7 @@ export default function ClientMap({ center, zoom }: ClientMapProps) {
                 icon={icon}
               >
                 <Popup>
-                  <div className="max-w-xs">
-                    <h3 className="font-semibold mb-1">{property.address}</h3>
-                    <div className="text-sm text-gray-600 mb-2">
-                      <div>{property.property_type}</div>
-                      <div>{property.area}m²</div>
-                    </div>
-                    <PriceHistoryChart
-                      priceHistory={property.price_history}
-                      area={property.area}
-                    />
-                  </div>
+                  <PropertyPopup property={property} />
                 </Popup>
               </Marker>
             );
