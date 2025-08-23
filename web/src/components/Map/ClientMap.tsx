@@ -9,6 +9,7 @@ import "leaflet-defaulticon-compatibility";
 import { Property } from "@/types/property";
 import { PropertyRepository } from "@/repositories/PropertyRepository";
 import L from "leaflet";
+import { toast } from "sonner";
 
 const propertyRepository = new PropertyRepository();
 
@@ -157,6 +158,24 @@ export default function ClientMap({ center, zoom }: ClientMapProps) {
         setAllProperties(data);
         setFilteredProperties(data);
         console.log(`Loaded ${data.length} properties`);
+
+        // Show useful product tips
+        toast.info("💡 Astuce", {
+          description:
+            "Utilisez les filtres à gauche pour affiner votre recherche",
+          duration: 5000,
+        });
+
+        toast.success("🔍 Navigation", {
+          description:
+            "Cliquez sur les marqueurs pour voir l'historique des prix",
+          duration: 6000,
+        });
+
+        toast.info("⚡ Zoom", {
+          description: "Utilisez les contrôles en haut à droite pour zoomer",
+          duration: 4000,
+        });
       } catch (error) {
         console.error("Error:", error);
       } finally {
@@ -271,7 +290,30 @@ export default function ClientMap({ center, zoom }: ClientMapProps) {
         priceRange={priceRange}
         dateRange={dateRange}
       />
-      <div className="flex-1">
+      <div className="flex-1 relative">
+        {/* Legend - Top Right (left of zoom controls) */}
+        <div className="absolute top-4 right-20 z-[1000]">
+          <div className="bg-white rounded-lg shadow-lg p-3 border">
+            <h3 className="text-sm font-semibold text-gray-800 mb-2">
+              Légende
+            </h3>
+            <div className="space-y-2">
+              <div className="flex items-center gap-2">
+                <div className="w-4 h-4 bg-green-500 rounded-full"></div>
+                <span className="text-xs text-gray-600">
+                  Prix &lt; 3 500€/m²
+                </span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-4 h-4 bg-blue-500 rounded-full"></div>
+                <span className="text-xs text-gray-600">
+                  Prix &gt;= 3 500€/m²
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <MapContainer
           center={center || [48.8147, 2.3833]}
           zoom={zoom || 14}

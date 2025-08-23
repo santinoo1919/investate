@@ -77,3 +77,10 @@ body {
 .overflow-auto::-webkit-scrollbar-thumb:hover {
   background: #666;
 }
+
+/* Simple positioning - move zoom controls to top right */
+.leaflet-top.leaflet-left {
+  top: 10px;
+  left: auto;
+  right: 10px;
+}
