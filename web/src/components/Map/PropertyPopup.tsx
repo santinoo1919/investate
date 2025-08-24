@@ -27,6 +27,15 @@ const PriceHistoryChart: React.FC<PriceHistoryChartProps> = ({
   const latestPrice = priceHistory[0]?.price;
   const pricePerSqm = area && area > 0 ? latestPrice / area : null;
 
+  // Determine color based on price per m² (same logic as legend)
+  const getPriceColor = (price: number) => {
+    if (price < 3500) {
+      return "bg-green-50 text-green-700"; // Green for low price
+    } else {
+      return "bg-blue-50 text-blue-700"; // Blue for high price
+    }
+  };
+
   return (
     <div className="space-y-2">
       <div className="flex items-center justify-between">
@@ -38,7 +47,11 @@ const PriceHistoryChart: React.FC<PriceHistoryChartProps> = ({
           }).format(latestPrice)}
         </span>
         {pricePerSqm && (
-          <span className="bg-gray-100 text-gray-700 px-2 py-1 rounded-md text-xs font-normal">
+          <span
+            className={`px-2 py-1 rounded-md text-xs font-normal ${getPriceColor(
+              pricePerSqm
+            )}`}
+          >
             {new Intl.NumberFormat("fr-FR", {
               style: "currency",
               currency: "EUR",
@@ -51,14 +64,14 @@ const PriceHistoryChart: React.FC<PriceHistoryChartProps> = ({
 
       {priceHistory.length > 1 && (
         <div className="space-y-1">
-          <div className="flex items-center gap-1 text-xs text-gray-600">
+          <div className="flex items-center gap-1 text-xs text-text-body">
             <TrendingUp className="h-3 w-3" />
             <span>Historique ({priceHistory.length} transactions)</span>
           </div>
           <div className="grid gap-1">
             {priceHistory.slice(0, 3).map((entry, index) => (
               <div key={index} className="flex justify-between text-xs">
-                <span className="text-gray-500">
+                <span className="text-text-muted">
                   {new Date(entry.transaction_date).toLocaleDateString(
                     "fr-FR",
                     {
@@ -77,7 +90,7 @@ const PriceHistoryChart: React.FC<PriceHistoryChartProps> = ({
               </div>
             ))}
             {priceHistory.length > 3 && (
-              <div className="text-xs text-gray-500 text-center pt-1">
+              <div className="text-xs text-text-muted text-center pt-1">
                 +{priceHistory.length - 3} autres transactions
               </div>
             )}
@@ -105,8 +118,8 @@ export default function PropertyPopup({ property }: PropertyPopupProps) {
     <div className="w-80 bg-white rounded-lg shadow-lg overflow-hidden">
       <div className="px-4 py-3 border-b border-gray-100">
         <div className="flex items-start gap-2">
-          <MapPin className="h-4 w-4 text-gray-500 mt-0.5 flex-shrink-0" />
-          <h3 className="text-base font-medium text-gray-800 leading-tight">
+          <MapPin className="h-4 w-4 text-text-muted mt-0.5 flex-shrink-0" />
+          <h3 className="text-base font-medium text-text-title leading-tight">
             {property.address}
           </h3>
         </div>
@@ -115,26 +128,26 @@ export default function PropertyPopup({ property }: PropertyPopupProps) {
         {/* Property Details */}
         <div className="grid grid-cols-2 gap-3 text-sm">
           <div className="flex items-center gap-2">
-            <Home className="h-4 w-4 text-gray-500" />
-            <span className="text-gray-600">Type:</span>
+            <Home className="h-4 w-4 text-text-muted" />
+            <span className="text-text-body">Type:</span>
             <span className="bg-blue-50 text-blue-700 px-2 py-1 rounded text-xs font-normal">
               {property.property_type}
             </span>
           </div>
           {property.area && (
             <div className="flex items-center gap-2">
-              <Ruler className="h-4 w-4 text-gray-500" />
-              <span className="text-gray-600">Surface:</span>
-              <span className="font-medium text-gray-800">
+              <Ruler className="h-4 w-4 text-text-body" />
+              <span className="text-text-body">Surface:</span>
+              <span className="font-medium text-text-title">
                 {property.area}m²
               </span>
             </div>
           )}
           {property.rooms && (
             <div className="flex items-center gap-2">
-              <Home className="h-4 w-4 text-gray-500" />
-              <span className="text-gray-600">Pièces:</span>
-              <span className="font-medium text-gray-800">
+              <Home className="h-4 w-4 text-text-body" />
+              <span className="text-text-body">Pièces:</span>
+              <span className="font-medium text-text-title">
                 {property.rooms}
               </span>
             </div>
@@ -144,9 +157,9 @@ export default function PropertyPopup({ property }: PropertyPopupProps) {
         {/* Dernière vente - Full width */}
         {property.price_history?.[0]?.transaction_date && (
           <div className="flex items-center gap-2 text-sm">
-            <Calendar className="h-4 w-4 text-gray-500" />
-            <span className="text-gray-600">Dernière vente:</span>
-            <span className="font-medium text-gray-800">
+            <Calendar className="h-4 w-4 text-text-muted" />
+            <span className="text-text-body">Dernière vente:</span>
+            <span className="font-medium text-text-title">
               {formatDate(property.price_history[0].transaction_date)}
             </span>
           </div>

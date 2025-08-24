@@ -69,7 +69,7 @@ export default function FiltersPanel({
         <div className="relative h-full">
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="absolute top-1/2 -right-4 transform -translate-y-1/2 bg-white hover:bg-gray-100 text-gray-600 rounded-full w-8 h-8 flex items-center justify-center shadow-md border border-gray-200 transition-transform duration-300 ease-in-out"
+            className="absolute top-1/2 -right-4 transform -translate-y-1/2 bg-white hover:bg-gray-100 text-text-body rounded-full w-8 h-8 flex items-center justify-center shadow-md border border-gray-200 transition-transform duration-300 ease-in-out"
             style={{ zIndex: 1 }}
             aria-label={isOpen ? "Collapse filters" : "Expand filters"}
           >
@@ -82,17 +82,17 @@ export default function FiltersPanel({
 
           <div className="w-full h-full flex flex-col">
             <div className="px-6 py-4 border-b border-gray-200">
-              <h2 className="text-xl font-semibold text-gray-800">Filtres</h2>
+              <h2 className="text-xl font-semibold text-text-title">Filtres</h2>
             </div>
 
             <div className="flex-grow p-6 space-y-6 overflow-y-auto">
               {/* Filter sections */}
               <div className="space-y-2">
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-text-title">
                   Type de bien
                 </label>
                 <select
-                  className="w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                  className="w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-sm"
                   value={localFilters.propertyTypes?.[0] || ""}
                   onChange={(e) =>
                     handleChange(
@@ -111,7 +111,7 @@ export default function FiltersPanel({
               </div>
 
               <div className="space-y-2">
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-text-title">
                   Prix (€)
                 </label>
                 <div className="grid grid-cols-2 gap-3">
@@ -119,7 +119,7 @@ export default function FiltersPanel({
                     <input
                       type="number"
                       placeholder="Min"
-                      className="w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                      className="w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-sm"
                       min={priceRange.min}
                       max={priceRange.max}
                       value={localFilters.minPrice || ""}
@@ -135,7 +135,7 @@ export default function FiltersPanel({
                     <input
                       type="number"
                       placeholder="Max"
-                      className="w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                      className="w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-sm"
                       min={priceRange.min}
                       max={priceRange.max}
                       value={localFilters.maxPrice || ""}
@@ -151,7 +151,7 @@ export default function FiltersPanel({
               </div>
 
               <div className="space-y-2">
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-text-title">
                   Nombre de pièces
                 </label>
                 <div className="grid grid-cols-2 gap-3">
@@ -159,7 +159,7 @@ export default function FiltersPanel({
                     <input
                       type="number"
                       placeholder="Min"
-                      className="w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                      className="w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-sm"
                       min={1}
                       value={localFilters.minRooms || ""}
                       onChange={(e) =>
@@ -174,7 +174,7 @@ export default function FiltersPanel({
                     <input
                       type="number"
                       placeholder="Max"
-                      className="w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                      className="w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-sm"
                       min={1}
                       value={localFilters.maxRooms || ""}
                       onChange={(e) =>
@@ -189,7 +189,7 @@ export default function FiltersPanel({
               </div>
 
               <div className="space-y-2">
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-text-title">
                   Surface (m²)
                 </label>
                 <div className="grid grid-cols-2 gap-3">
@@ -197,7 +197,7 @@ export default function FiltersPanel({
                     <input
                       type="number"
                       placeholder="Min"
-                      className="w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                      className="w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-sm"
                       min={0}
                       value={localFilters.minArea || ""}
                       onChange={(e) =>
@@ -212,7 +212,7 @@ export default function FiltersPanel({
                     <input
                       type="number"
                       placeholder="Max"
-                      className="w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                      className="w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-sm"
                       min={0}
                       value={localFilters.maxArea || ""}
                       onChange={(e) =>
@@ -234,7 +234,7 @@ export default function FiltersPanel({
                   <div>
                     <input
                       type="date"
-                      className="w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                      className="w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-sm"
                       min={dateRange.start}
                       max={dateRange.end}
                       value={localFilters.startDate || ""}
@@ -246,7 +246,7 @@ export default function FiltersPanel({
                   <div>
                     <input
                       type="date"
-                      className="w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                      className="w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-sm"
                       min={dateRange.start}
                       max={dateRange.end}
                       value={localFilters.endDate || ""}
@@ -261,13 +261,13 @@ export default function FiltersPanel({
               <div className="flex justify-end space-x-3">
                 <button
                   onClick={handleReset}
-                  className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                  className="px-4 py-2 text-sm font-medium text-text-title bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-400"
                 >
                   Réinitialiser
                 </button>
                 <button
                   onClick={handleApply}
-                  className={`px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ${
+                  className={`px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-400 ${
                     !isDirty && "opacity-50 cursor-not-allowed"
                   }`}
                   disabled={!isDirty}

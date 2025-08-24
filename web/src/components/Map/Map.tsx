@@ -73,9 +73,9 @@ export default function Map({
                   <h3 className="font-semibold mb-1">
                     {formatPrice(property.price)}
                   </h3>
-                  <p className="text-sm text-gray-600">{property.address}</p>
+                  <p className="text-sm text-text-body">{property.address}</p>
                   {property.area && (
-                    <p className="text-sm text-gray-600">{property.area} m²</p>
+                    <p className="text-sm text-text-body">{property.area} m²</p>
                   )}
                 </div>
               </Popup>

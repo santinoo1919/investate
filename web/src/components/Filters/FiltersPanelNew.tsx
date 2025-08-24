@@ -82,12 +82,14 @@ export default function FiltersPanelNew({
   const renderFilterContent = () => (
     <div className="w-full h-full flex flex-col">
       <div className="px-6 py-4 border-b border-gray-200">
-        <h2 className="text-xl font-medium text-gray-800">Filtres</h2>
+        <h2 className="text-xl font-medium text-text-title">Filtres</h2>
       </div>
 
       <div className="flex-grow p-6 space-y-6 overflow-y-auto">
         <div className="space-y-2">
-          <Label htmlFor="propertyType">Type de bien</Label>
+          <Label htmlFor="propertyType" className="text-text-title">
+            Type de bien
+          </Label>
           <Select
             value={localFilters.propertyTypes?.[0] || "all"}
             onValueChange={(value) =>
@@ -112,7 +114,7 @@ export default function FiltersPanelNew({
         </div>
 
         <div className="space-y-2">
-          <Label>Prix (€)</Label>
+          <Label className="text-text-title">Prix (€)</Label>
           <div className="grid grid-cols-2 gap-3">
             <div>
               <Input
@@ -140,7 +142,7 @@ export default function FiltersPanelNew({
         </div>
 
         <div className="space-y-2">
-          <Label>Nombre de pièces</Label>
+          <Label className="text-text-title">Nombre de pièces</Label>
           <div className="grid grid-cols-2 gap-3">
             <div>
               <Input
@@ -166,7 +168,7 @@ export default function FiltersPanelNew({
         </div>
 
         <div className="space-y-2">
-          <Label>Surface (m²)</Label>
+          <Label className="text-text-title">Surface (m²)</Label>
           <div className="grid grid-cols-2 gap-3">
             <div>
               <Input
@@ -192,7 +194,7 @@ export default function FiltersPanelNew({
         </div>
 
         <div className="space-y-2">
-          <Label>Date de transaction</Label>
+          <Label className="text-text-title">Date de transaction</Label>
           <div className="grid grid-cols-2 gap-3">
             <div>
               <Popover open={startDateOpen} onOpenChange={setStartDateOpen}>
@@ -205,7 +207,7 @@ export default function FiltersPanelNew({
                     {localFilters.startDate ? (
                       format(new Date(localFilters.startDate), "dd/MM/yy")
                     ) : (
-                      <span className="text-muted-foreground">Date début</span>
+                      <span className="text-text-muted">Date début</span>
                     )}
                   </Button>
                 </PopoverTrigger>
@@ -230,6 +232,8 @@ export default function FiltersPanelNew({
                       setStartDateOpen(false); // Close calendar after selection
                     }}
                     disabled={(date) => date.getFullYear() !== 2024}
+                    defaultMonth={new Date(2024, 0, 1)}
+                    className="rounded-md border"
                   />
                 </PopoverContent>
               </Popover>
@@ -245,7 +249,7 @@ export default function FiltersPanelNew({
                     {localFilters.endDate ? (
                       format(new Date(localFilters.endDate), "dd/MM/yy")
                     ) : (
-                      <span className="text-muted-foreground">Date fin</span>
+                      <span className="text-text-muted">Date fin</span>
                     )}
                   </Button>
                 </PopoverTrigger>
@@ -270,6 +274,8 @@ export default function FiltersPanelNew({
                       setEndDateOpen(false); // Close calendar after selection
                     }}
                     disabled={(date) => date.getFullYear() !== 2024}
+                    defaultMonth={new Date(2024, 0, 1)}
+                    className="rounded-md border"
                   />
                 </PopoverContent>
               </Popover>

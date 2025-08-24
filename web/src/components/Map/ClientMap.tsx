@@ -58,12 +58,18 @@ export default function ClientMap({ center, zoom }: ClientMapProps) {
   const [allProperties, setAllProperties] = useState<Property[]>([]);
   const [filteredProperties, setFilteredProperties] = useState<Property[]>([]);
   const [loading, setLoading] = useState(true);
+  const [mounted, setMounted] = useState(false);
   const [filters, setFilters] = useState<Filters>({});
   const [propertyTypes, setPropertyTypes] = useState<string[]>([]);
   const [priceRange, setPriceRange] = useState<{ min: number; max: number }>({
     min: 0,
     max: 1000000,
   });
+
+  // Ensure component is mounted before rendering map
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // Load all properties once on initial render
   useEffect(() => {
@@ -201,10 +207,10 @@ export default function ClientMap({ center, zoom }: ClientMapProps) {
     setFilters(newFilters);
   };
 
-  if (loading) {
+  if (loading || !filteredProperties || !mounted) {
     return (
       <div className="w-full h-screen bg-gray-100 flex items-center justify-center">
-        <div className="text-gray-600">Chargement des biens...</div>
+        <div className="text-text-body">Chargement des biens...</div>
       </div>
     );
   }
@@ -221,19 +227,19 @@ export default function ClientMap({ center, zoom }: ClientMapProps) {
         {/* Legend - Top Right (left of zoom controls) */}
         <div className="absolute top-4 right-20 z-[1000]">
           <div className="bg-white rounded-lg shadow-lg p-3 border">
-            <h3 className="text-sm font-semibold text-gray-800 mb-2">
+            <h3 className="text-sm font-semibold text-text-title mb-2">
               Légende
             </h3>
             <div className="space-y-2">
               <div className="flex items-center gap-2">
                 <div className="w-4 h-4 bg-green-500 rounded-full"></div>
-                <span className="text-xs text-gray-600">
+                <span className="text-xs text-text-body">
                   Prix &lt; 3 500€/m²
                 </span>
               </div>
               <div className="flex items-center gap-2">
                 <div className="w-4 h-4 bg-blue-500 rounded-full"></div>
-                <span className="text-xs text-gray-600">
+                <span className="text-xs text-text-body">
                   Prix &gt;= 3 500€/m²
                 </span>
               </div>
